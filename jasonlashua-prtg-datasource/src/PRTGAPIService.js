@@ -629,6 +629,7 @@ function PRTGAPIService(alertSrv, backendSrv) {
       ) {
         const events = [];
         let time = 0;
+        let url = this.url;
         _.each(messages, function(message) {
           time = Math.round((message.datetime_raw - 25569) * 86400, 0);
           if (time > from && time < to) {
@@ -636,13 +637,11 @@ function PRTGAPIService(alertSrv, backendSrv) {
               time: time * 1000,
               title: message.status,
               text:
-                "<p>" +
-                message.parent +
-                "(" +
-                message.type +
-                ") Message:<br>" +
-                message.message +
-                "</p>"
+                "<div>PRTG Alert \"" + message.status + "\" for sensor \"" + message.name +"\" triggered." +
+                "<br/>" +
+                "<a href=\"" + url.replace("/api","") + "sensor.htm?id=" + message.objid + "&tabid=1\" target=\"_blank\">" + message.name + "</a><br/>",
+              tags:[message.objid, message.parent]
+                
             });
           }
         });

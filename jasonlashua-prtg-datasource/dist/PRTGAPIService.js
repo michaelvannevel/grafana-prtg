@@ -466,13 +466,16 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
           return this.performPRTGAPIRequest(method, params).then(function (messages) {
             var events = [];
             var time = 0;
+            var url = this.url;
             _.each(messages, function (message) {
               time = Math.round((message.datetime_raw - 25569) * 86400, 0);
               if (time > from && time < to) {
                 events.push({
                   time: time * 1000,
                   title: message.status,
-                  text: "<p>" + message.parent + "(" + message.type + ") Message:<br>" + message.message + "</p>"
+                  text: "<div>PRTG Alert \"" + message.status + "\" for sensor \"" + message.name + "\" triggered." + "<br/>" + "<a href=\"" + url.replace("/api", "") + "sensor.htm?id=" + message.objid + "&tabid=1\" target=\"_blank\">" + message.name + "</a><br/>",
+                  tags: [message.objid, message.parent]
+
                 });
               }
             });
