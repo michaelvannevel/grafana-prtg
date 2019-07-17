@@ -216,7 +216,7 @@ System.register(["lodash", "app/core/utils/datemath", "./PRTGAPIService", "./uti
 
             var from = Math.ceil(dateMath.parse(options.range.from) / 1000);
             var to = Math.ceil(dateMath.parse(options.range.to) / 1000);
-            return this.prtgAPI.getMessages(from, to, options.annotation.sensorId).then(function (messages) {
+            return this.prtgAPI.getMessages(from, to, options.annotation.groupId).then(function (messages) {
               _.each(messages, function (message) {
                 message.annotation = options.annotation; //inject the annotation into the object
               }, _this4);

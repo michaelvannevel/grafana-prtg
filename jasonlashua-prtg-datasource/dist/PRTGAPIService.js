@@ -157,8 +157,6 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
       }, {
         key: "performPRTGAPILogin",
         value: function performPRTGAPILogin() {
-          var _this = this;
-
           var username = this.username;
           var passhash = this.passhash;
           var options = {
@@ -166,7 +164,7 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
             url: this.url + "/getstatus.htm?id=0&username=" + username + "&passhash=" + passhash
           };
           return this.backendSrv.datasourceRequest(options).then(function (response) {
-            _this.passhash = response;
+            //this.passhash = response;
             return response;
           });
         }
@@ -254,18 +252,18 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
       }, {
         key: "getGroups",
         value: function getGroups() {
-          var _this2 = this;
+          var _this = this;
 
           var groupFilter = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/.*/";
 
           return this.performGroupSuggestQuery().then(function (groups) {
-            return _this2.filterQuery(groups, groupFilter);
+            return _this.filterQuery(groups, groupFilter);
           });
         }
       }, {
         key: "getHosts",
         value: function getHosts() {
-          var _this3 = this;
+          var _this2 = this;
 
           var groupFilter = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/.*/";
           var hostFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "/.*/";
@@ -273,7 +271,7 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
           //this is kind of silly but no need to include filter_group params if you include all...
           if (groupFilter == "/.*/") {
             return this.performDeviceSuggestQuery().then(function (devices) {
-              return _this3.filterQuery(devices, hostFilter);
+              return _this2.filterQuery(devices, hostFilter);
             });
           } else {
             return this.getGroups(groupFilter).then(function (filteredGroups) {
@@ -282,8 +280,8 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
                 filters.push("filter_group=" + group.group);
               });
 
-              return _this3.performDeviceSuggestQuery("&" + filters.join("&")).then(function (devices) {
-                return _this3.filterQuery(devices, hostFilter);
+              return _this2.performDeviceSuggestQuery("&" + filters.join("&")).then(function (devices) {
+                return _this2.filterQuery(devices, hostFilter);
               });
             });
           }
@@ -293,7 +291,7 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
         value: function getSensors() {
           var groupFilter = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/.*/";
 
-          var _this4 = this;
+          var _this3 = this;
 
           var hostFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "/.*/";
           var sensorFilter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "/.*/";
@@ -304,12 +302,12 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
               filters.push("filter_device=" + host.device);
             });
             if (hostFilter == "/.*/" && groupFilter == "/.*/") {
-              return _this4.performSensorSuggestQuery().then(function (sensors) {
-                return _this4.filterQuery(sensors, sensorFilter);
+              return _this3.performSensorSuggestQuery().then(function (sensors) {
+                return _this3.filterQuery(sensors, sensorFilter);
               });
             } else {
-              return _this4.performSensorSuggestQuery("&" + filters.join("&")).then(function (sensors) {
-                return _this4.filterQuery(sensors, sensorFilter);
+              return _this3.performSensorSuggestQuery("&" + filters.join("&")).then(function (sensors) {
+                return _this3.filterQuery(sensors, sensorFilter);
               });
             }
           });
@@ -319,7 +317,7 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
         value: function getAllItems() {
           var groupFilter = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/.*/";
 
-          var _this5 = this;
+          var _this4 = this;
 
           var hostFilter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "/.*/";
           var sensorFilter = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "/.*/";
@@ -333,7 +331,7 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
              */
             var promises = _.map(sensors, function (sensor) {
               var params = "content=channels&columns=sensor,name&id=" + sensor.objid;
-              return _this5.performPRTGAPIRequest("table.json", params).then(function (channels) {
+              return _this4.performPRTGAPIRequest("table.json", params).then(function (channels) {
                 /**
                  * Create an object that contains all of the information necessary to query this metric.
                  * This information will be used at render time to group the datapoints and name them.
@@ -354,12 +352,12 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
       }, {
         key: "getItems",
         value: function getItems(groupFilter, deviceFilter, sensorFilter, channelFilter) {
-          var _this6 = this;
+          var _this5 = this;
 
           var invertChannelFilter = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
           return this.getAllItems(groupFilter, deviceFilter, sensorFilter).then(function (items) {
-            return _this6.filterQuery(items, channelFilter, invertChannelFilter);
+            return _this5.filterQuery(items, channelFilter, invertChannelFilter);
           });
         }
       }, {
@@ -462,9 +460,9 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
         }
       }, {
         key: "getMessages",
-        value: function getMessages(from, to, sensorId) {
+        value: function getMessages(from, to, groupId) {
           var method = "table.json";
-          var params = "&content=messages&columns=objid,datetime,parent,type,name,status,message&id=" + sensorId;
+          var params = "&content=messages&columns=objid,datetime,parent,type,name,status,message&id=" + groupId;
           return this.performPRTGAPIRequest(method, params).then(function (messages) {
             var events = [];
             var time = 0;
