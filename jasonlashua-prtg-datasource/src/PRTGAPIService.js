@@ -617,13 +617,13 @@ function PRTGAPIService(alertSrv, backendSrv) {
      * 
      * @param {number} from - Earliest time in range
      * @param {number} to - Latest time in range
-     * @param {number} sensorId - Numeric ID of Sensor 
+     * @param {number} groupId - Numeric ID of Group 
      */
-    getMessages(from, to, sensorId) {
+    getMessages(from, to, groupId) {
       const method = "table.json";
       const params =
         "&content=messages&columns=objid,datetime,parent,type,name,status,message&id=" +
-        sensorId;
+        groupId;
       return this.performPRTGAPIRequest(method, params).then(function(
         messages
       ) {
