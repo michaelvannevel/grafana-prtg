@@ -206,7 +206,7 @@ class PRTGDataSource {
     const from = Math.ceil(dateMath.parse(options.range.from) / 1000);
     const to = Math.ceil(dateMath.parse(options.range.to) / 1000);
     return this.prtgAPI
-      .getMessages(from, to, options.annotation.sensorId)
+      .getMessages(from, to, options.annotation.groupId)
       .then(messages => {
         _.each(
           messages,
