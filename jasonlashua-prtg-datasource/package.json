@@ -1,8 +1,8 @@
 {
-  "name": "grafana-prtg",
+  "name": "grafana-prtg-di",
   "private": false,
   "version": "4.0.3",
-  "description": "PRTG Datasource plugin for Grafana",
+  "description": "PRTG Datasource plugin for Grafana - DI",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
