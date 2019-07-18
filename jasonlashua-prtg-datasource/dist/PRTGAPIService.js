@@ -463,10 +463,11 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
         value: function getMessages(from, to, groupId) {
           var method = "table.json";
           var params = "&content=messages&columns=objid,datetime,parent,type,name,status,message&id=" + groupId;
+          var url = this.url;
           return this.performPRTGAPIRequest(method, params).then(function (messages) {
             var events = [];
             var time = 0;
-            var url = this.url;
+
             _.each(messages, function (message) {
               time = Math.round((message.datetime_raw - 25569) * 86400, 0);
               if (time > from && time < to) {

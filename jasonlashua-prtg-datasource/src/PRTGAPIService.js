@@ -624,12 +624,13 @@ function PRTGAPIService(alertSrv, backendSrv) {
       const params =
         "&content=messages&columns=objid,datetime,parent,type,name,status,message&id=" +
         groupId;
+      let url = this.url;
       return this.performPRTGAPIRequest(method, params).then(function(
         messages
       ) {
         const events = [];
         let time = 0;
-        let url = this.url;
+        
         _.each(messages, function(message) {
           time = Math.round((message.datetime_raw - 25569) * 86400, 0);
           if (time > from && time < to) {
