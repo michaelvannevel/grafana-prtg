@@ -18,8 +18,13 @@ System.register(['./datasource', './query_ctrl'], function (_export, _context) {
       PRTGQueryController = _query_ctrl.PRTGQueryController;
     }],
     execute: function () {
-      _export('ConfigCtrl', PRTGConfigController = function PRTGConfigController() {
+      _export('ConfigCtrl', PRTGConfigController = function PRTGConfigController($scope, $injector, $rootScope, $sce, templateSrv) {
         _classCallCheck(this, PRTGConfigController);
+
+        var scope = $scope;
+        $scope.$watch('ctrl.current.url', function (newValue, oldValue) {
+          scope.ctrl.current.jsonData.realUrl = newValue;
+        });
       });
 
       PRTGConfigController.templateUrl = './partials/config.html';

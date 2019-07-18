@@ -1,7 +1,14 @@
 import {PRTGDataSource} from './datasource';
 import {PRTGQueryController} from './query_ctrl';
 
-class PRTGConfigController {}
+class PRTGConfigController {
+  constructor($scope, $injector, $rootScope, $sce, templateSrv) {
+     var scope = $scope;
+     $scope.$watch('ctrl.current.url', function(newValue, oldValue) {
+       scope.ctrl.current.jsonData.realUrl = newValue;
+    });
+  }
+}
 PRTGConfigController.templateUrl = './partials/config.html';
 
 //class PRTGQueryOptionsController {}

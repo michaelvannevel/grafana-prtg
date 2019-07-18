@@ -15,6 +15,7 @@ class PRTGDataSource {
     this.alertSrv = alertSrv;
     this.name = instanceSettings.name;
     this.url = instanceSettings.url;
+    this.realUrl = instanceSettings.jsonData.realUrl;
     this.username = instanceSettings.jsonData.prtgApiUser;
     this.passhash = instanceSettings.jsonData.prtgApiPasshash;
     this.cacheTimeoutMintues =
@@ -22,6 +23,7 @@ class PRTGDataSource {
     this.limitmetrics = instanceSettings.meta.limitmetrics || 100;
     this.prtgAPI = new PRTGAPIService(
       this.url,
+      this.realUrl,
       this.username,
       this.passhash,
       this.cacheTimeoutMintues

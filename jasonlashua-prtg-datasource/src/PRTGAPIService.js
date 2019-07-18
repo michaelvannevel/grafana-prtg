@@ -10,8 +10,9 @@ import { XMLXform } from "./xmlparser";
 /** @ngInject */
 function PRTGAPIService(alertSrv, backendSrv) {
   class PRTGAPI {
-    constructor(api_url, username, passhash, cacheTimeoutMinutes) {
+    constructor(api_url, api_real_url, username, passhash, cacheTimeoutMinutes) {
       this.url = api_url;
+      this.realUrl = api_real_url;
       this.username = username;
       this.passhash = passhash;
       this.lastId = false;
@@ -624,7 +625,7 @@ function PRTGAPIService(alertSrv, backendSrv) {
       const params =
         "&content=messages&columns=objid,datetime,parent,type,name,status,message&id=" +
         groupId;
-      let url = this.url;
+      let url = this.realUrl;
       return this.performPRTGAPIRequest(method, params).then(function(
         messages
       ) {

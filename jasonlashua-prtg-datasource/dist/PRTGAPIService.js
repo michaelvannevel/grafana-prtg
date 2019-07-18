@@ -19,10 +19,11 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
   /** @ngInject */
   function PRTGAPIService(alertSrv, backendSrv) {
     var PRTGAPI = function () {
-      function PRTGAPI(api_url, username, passhash, cacheTimeoutMinutes) {
+      function PRTGAPI(api_url, api_real_url, username, passhash, cacheTimeoutMinutes) {
         _classCallCheck(this, PRTGAPI);
 
         this.url = api_url;
+        this.realUrl = api_real_url;
         this.username = username;
         this.passhash = passhash;
         this.lastId = false;
@@ -463,7 +464,7 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
         value: function getMessages(from, to, groupId) {
           var method = "table.json";
           var params = "&content=messages&columns=objid,datetime,parent,type,name,status,message&id=" + groupId;
-          var url = this.url;
+          var url = this.realUrl;
           return this.performPRTGAPIRequest(method, params).then(function (messages) {
             var events = [];
             var time = 0;
