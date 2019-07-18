@@ -475,7 +475,7 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
                 events.push({
                   time: time * 1000,
                   title: message.status,
-                  text: "<div>PRTG Alert \"" + message.status + "\" for sensor \"" + message.name + "\" triggered." + "<br/>" + "<a href=\"" + url.replace("/api", "") + "sensor.htm?id=" + message.objid + "&tabid=1\" target=\"_blank\">" + message.name + "</a><br/>",
+                  text: "<div>PRTG Alert \"" + message.status + "\" for sensor \"" + message.name + "\" triggered." + "<br/>" + "<a href=\"" + url.replace("api", "sensor.htm") + "?id=" + message.objid + "&tabid=1\" target=\"_blank\">" + message.name + "</a><br/>",
                   tags: [message.objid, message.parent]
 
                 });

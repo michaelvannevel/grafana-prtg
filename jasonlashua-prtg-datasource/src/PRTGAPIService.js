@@ -641,7 +641,7 @@ function PRTGAPIService(alertSrv, backendSrv) {
               text:
                 "<div>PRTG Alert \"" + message.status + "\" for sensor \"" + message.name +"\" triggered." +
                 "<br/>" +
-                "<a href=\"" + url.replace("/api","") + "sensor.htm?id=" + message.objid + "&tabid=1\" target=\"_blank\">" + message.name + "</a><br/>",
+                "<a href=\"" + url.replace("api","sensor.htm") + "?id=" + message.objid + "&tabid=1\" target=\"_blank\">" + message.name + "</a><br/>",
               tags:[message.objid, message.parent]
                 
             });
