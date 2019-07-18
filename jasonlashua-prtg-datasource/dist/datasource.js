@@ -52,11 +52,12 @@ System.register(["lodash", "app/core/utils/datemath", "./PRTGAPIService", "./uti
           this.alertSrv = alertSrv;
           this.name = instanceSettings.name;
           this.url = instanceSettings.url;
+          this.realUrl = instanceSettings.jsonData.realUrl;
           this.username = instanceSettings.jsonData.prtgApiUser;
           this.passhash = instanceSettings.jsonData.prtgApiPasshash;
           this.cacheTimeoutMintues = instanceSettings.jsonData.cacheTimeoutMinutes || 5;
           this.limitmetrics = instanceSettings.meta.limitmetrics || 100;
-          this.prtgAPI = new PRTGAPIService(this.url, this.username, this.passhash, this.cacheTimeoutMintues);
+          this.prtgAPI = new PRTGAPIService(this.url, this.realUrl, this.username, this.passhash, this.cacheTimeoutMintues);
         }
 
         /**

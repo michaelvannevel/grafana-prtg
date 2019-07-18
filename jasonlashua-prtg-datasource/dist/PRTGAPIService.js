@@ -19,10 +19,11 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
   /** @ngInject */
   function PRTGAPIService(alertSrv, backendSrv) {
     var PRTGAPI = function () {
-      function PRTGAPI(api_url, username, passhash, cacheTimeoutMinutes) {
+      function PRTGAPI(api_url, api_real_url, username, passhash, cacheTimeoutMinutes) {
         _classCallCheck(this, PRTGAPI);
 
         this.url = api_url;
+        this.realUrl = api_real_url;
         this.username = username;
         this.passhash = passhash;
         this.lastId = false;
@@ -463,18 +464,26 @@ System.register(["angular", "lodash", "./utils", "./xmlparser"], function (_expo
         value: function getMessages(from, to, groupId) {
           var method = "table.json";
           var params = "&content=messages&columns=objid,datetime,parent,type,name,status,message&id=" + groupId;
-          var url = this.url;
+          var url = this.realUrl;
           return this.performPRTGAPIRequest(method, params).then(function (messages) {
             var events = [];
             var time = 0;
-
-            _.each(messages, function (message) {
+            var type = "sensor";
+            _.each(messages.filter(function (event) {
+              return event.type != "Group";
+            }), function (message) {
               time = Math.round((message.datetime_raw - 25569) * 86400, 0);
+
               if (time > from && time < to) {
+                if (message.type == "Device") {
+                  type = "device";
+                } else {
+                  type = "sensor";
+                }
                 events.push({
                   time: time * 1000,
                   title: message.status,
-                  text: "<div>PRTG Alert \"" + message.status + "\" for sensor \"" + message.name + "\" triggered." + "<br/>" + "<a href=\"" + url.replace("/api", "") + "sensor.htm?id=" + message.objid + "&tabid=1\" target=\"_blank\">" + message.name + "</a><br/>",
+                  text: "<div>PRTG Alert \"" + message.status + "\" for " + type + " \"" + message.name + "\" triggered." + "<br/>" + "<a href=\"" + url.replace("api", type + ".htm") + "?id=" + message.objid + "&tabid=1\" target=\"_blank\">" + message.name + "</a><br/>",
                   tags: [message.objid, message.parent]
 
                 });
