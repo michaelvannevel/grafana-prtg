@@ -631,17 +631,24 @@ function PRTGAPIService(alertSrv, backendSrv) {
       ) {
         const events = [];
         let time = 0;
-        
-        _.each(messages, function(message) {
+        let type = "sensor";
+        _.each(messages.filter(event => event.type != "Group"), function(message) {
           time = Math.round((message.datetime_raw - 25569) * 86400, 0);
+          
           if (time > from && time < to) {
+            if(message.type == "Device"){
+              type = "device";
+            }
+            else{
+              type = "sensor";
+            }
             events.push({
               time: time * 1000,
               title: message.status,
               text:
-                "<div>PRTG Alert \"" + message.status + "\" for sensor \"" + message.name +"\" triggered." +
+                "<div>PRTG Alert \"" + message.status + "\" for " + type + " \"" + message.name +"\" triggered." +
                 "<br/>" +
-                "<a href=\"" + url.replace("api","sensor.htm") + "?id=" + message.objid + "&tabid=1\" target=\"_blank\">" + message.name + "</a><br/>",
+                "<a href=\"" + url.replace("api",type + ".htm") + "?id=" + message.objid + "&tabid=1\" target=\"_blank\">" + message.name + "</a><br/>",
               tags:[message.objid, message.parent]
                 
             });
